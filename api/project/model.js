@@ -2,16 +2,18 @@
 const db = require('./../../data/dbConfig');
 
 //GET
-function getProject(){
+function getProjects(){
     return db('projects')
 }
 
 //POST
-async function addProject(newProjects){
-      return db('projects').insert(newProjects)
-     
+async function addProjects(newProjects){
+    const [project_id] = await db('projects').insert(newProjects)
+    return db('projects')
+      .where({project_id})
+      .first()   
 }
 
-module.exports = {getProject,addProject}
+module.exports = {getProjects,addProjects}
 
 

@@ -16,7 +16,7 @@ router.post('/', async (req,res,next)=>{
 router.get('/', async (req,res,next)=>{
     try{
      const projects =  await Projects.getProjects()
-     res.json("works")
+     res.json(projects)
     }catch(err){
         next(err)
     }
