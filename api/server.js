@@ -2,6 +2,8 @@
 require('dotenv').config()
 
 const express = require('express');
+const resourceRouter = require('./resource/router')
+const projectRouter = require('./project/router')
 const helmet = require('helmet')
 
 const server = express()
@@ -9,13 +11,10 @@ const server = express()
 server.use(helmet());
 server.use(express.json());
 
-server.get('/', (req, res, next) => {
-    res.send(`
-      <h2>This is a test</h2>
-      <p>Testing</p>
-    `);
-  });
-  server.use('*', (req, res, next) => {
+server.use('/api/resources',resourceRouter)
+server.use('/api/projects', projectRouter)
+
+server.use('*', (req, res, next) => {
     console.log(`hitting ${req.method} ${req.baseUrl}`);
     next({ status: 404, message: 'not found' }); // this object becomes the "err" in the midd below
   });
