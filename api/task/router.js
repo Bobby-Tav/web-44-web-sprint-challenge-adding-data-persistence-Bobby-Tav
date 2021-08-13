@@ -8,9 +8,17 @@ const router = express.Router()
 //GET
 router.get('/', (req,res,next)=>{
         Tasks.getTasks()
-        .then((stuff)=>{
-            res.json(stuff)
-
+        .then(tasks =>{
+        if (tasks.task_completed === 0){
+           tasks.map(task=>{
+            task.task_completed = false;
+           })
+            
+           res.json(tasks) 
+        }else{
+            tasks.task_completed = true;
+            res.json(tasks)  
+        }
         })
         .catch(next)
 })
@@ -20,11 +28,12 @@ router.post('/', (req,res,next)=>{
     Tasks.addTasks(req.body)
     .then(res =>{
         if (res.task_completed === 0){
-           res.task_completed = false; 
+           res.task_completed = false;
+           res.json(res) 
         }else{
-            res.task_completed = true;  
+            res.task_completed = true;
+            res.json(res)  
         }
-        res.json(res)
     }).catch(next)
         
 })
